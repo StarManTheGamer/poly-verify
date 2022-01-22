@@ -27,7 +27,7 @@ client.on('ready', () => {
 
 client.on('guildMemberAdd', async (member) => {
 	const emb = new discord.MessageEmbed()
-		.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/img/polytoria.png')
+		.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/thumbnails/guilds/1.png')
 		.setTitle('Welcome to ' + member.guild.name + '!')
 		.setDescription('Please verify your account on Polytoria to get access to all channels.\n\nTo verify your account, add this code to your [description](https://polytoria.com/my/settings):')
 		.setColor(config.colors.info)
@@ -46,7 +46,7 @@ client.on('message', async (msg) => {
 	if (msg.channel.type === 'dm') {
 		if (msg.content === prefix + ' verify') {
 			const emb = new discord.MessageEmbed()
-				.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/img/polytoria.png')
+				.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/thumbnails/guilds/1.png')
 				.setDescription('Add this code to your [description](https://polytoria.com/my/settings):')
 				.setColor(config.colors.info)
 
@@ -67,7 +67,7 @@ client.on('message', async (msg) => {
 				if (profile.body.Description) {
 					if (profile.body.Description.includes(config['codePrefix'] + msg.author.id)) {
 						const emb = new discord.MessageEmbed()
-							.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/img/polytoria.png')
+							.setAuthor('Polytoria Verification', 'https://polytoria.com/assets/thumbnails/guilds/1.png')
 							.setDescription('You have been verified successfully. Happy talking!')
 							.setThumbnail('https://polytoria.com/assets/thumbnails/avatars/' + profile.body.AvatarHash + '.png')
 							.setColor(config.colors.success)
