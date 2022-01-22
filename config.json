@@ -1,0 +1,10 @@
+{
+	"token": "",
+	"prefix": "!poly",
+	"codePrefix": "pt-verify-",
+	"colors": {
+		"success": "#5df05d",
+		"error": "#e83838",
+		"info": "#49aef2"
+	}
+}
