@@ -1,8 +1,0 @@
-{
-	"name": "polytoria-verifier",
-	"version": "1.0.0",
-	"dependencies": {
-		"discord.js": "^12.4.1",
-		"phin": "^3.6.1"
-	}
-}
