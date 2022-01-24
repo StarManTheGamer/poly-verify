@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.25.0",
     "chalk": "^5.0.0",
     "discord-command-parser": "^1.5.3",
     "discord.js": "^13.6.0",

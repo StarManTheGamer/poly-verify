@@ -14,5 +14,5 @@ export const description = 'Get your server started!'
   * Command main function
   */
 export const main = function (message: Message) {
-    
+
 }

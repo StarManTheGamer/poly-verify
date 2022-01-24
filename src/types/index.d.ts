@@ -2,7 +2,7 @@ export type SessionData = {
     /**
      * The session's ID
      */
-    sessionID: stirng,
+    sessionID: string,
     /**
      * Session data
      */
