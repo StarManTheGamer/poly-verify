@@ -33,6 +33,11 @@ export const main = async function (message: Message, args: string[]) {
     message.channel.send('Your Polytoria account has already been verified. To unlink use `!poly unverify`')
     return
   }
-  // @ts-expect-error
-  onUserJoined(message.member, message.guild)
+  try {
+    await message.author.send("Gettin' things done...")
+    // @ts-expect-error
+    await onUserJoined(message.member, message.guild)
+  } catch {
+    message.channel.send("Couldn't send you a direct message! Please try again..")
+  }
 }
