@@ -33,7 +33,7 @@ export default class firebaseUtils {
    * @param { string } discordUserID Targetted user ID
    * @returns { Promise<Boolean> } Is user verified
    */
-  public static async isVerified (discordUserID: string): Promise<boolean> {
+   public static async isVerified (discordUserID: string): Promise<boolean> {
     const usersRef = fireStore.collection('Users').doc(discordUserID)
     const doc = await usersRef.get()
     if (!doc.exists) {
@@ -42,6 +42,20 @@ export default class firebaseUtils {
       return true
     }
   }
+
+    /**
+   * getPolyUser Function
+   *
+   * @summary Get the Discord User has linked with Polytoria Community Verify
+   *
+   * @param { string } discordUserID Targetted user ID
+   * @returns { Promise<Boolean> } Is user verified
+   */
+     public static async getPolyUser (discordUserID: string): Promise<any> {
+      const usersRef = fireStore.collection('Users').doc(discordUserID)
+      const doc = await usersRef.get()
+      return doc.data()
+    }
 
   /**
    * setVerified Function
@@ -103,7 +117,7 @@ export default class firebaseUtils {
    * @param { string } guildID Targetted Guild ID
    * @returns { Promise<any> } Result data
    */
-  public static async getServerConfig (guildID: string): Promise<any> {
+   public static async getServerConfig (guildID: string): Promise<any> {
     const guildRef = fireStore.collection('Configuration').doc(guildID)
     const doc = await guildRef.get()
     if (!doc.exists) {

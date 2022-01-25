@@ -1,5 +1,6 @@
 import { Message } from 'discord.js'
 import firebaseUtils from '../../utils/firebaseUtils.js'
+import polyUtils from '../../utils/polyUtils.js'
 import onUserJoined from '../events/onUserJoined.js'
 
 /**
@@ -20,15 +21,23 @@ export const main = async function (message: Message, args: string[]) {
   if (isVerified === true) {
     // @ts-expect-error
     const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'verifiedRole')
+
+    // @ts-expect-error
+    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'setVerifiedNickname')
+
     if (verifiedRoleConfig) {
       // @ts-expect-error
       const role = message.guild.roles.cache.find(r => r.id === verifiedRoleConfig)
 
       // @ts-expect-error
-      message.member.roles.add(role)
+      message.member.roles.add(role)      
+    }
+    if (setNicknameConfig == true) {
+      const linkedUser = await firebaseUtils.getPolyUser(message.author.id)
+      const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID)
 
-      message.channel.send('Successfully gave you verified role!')
-      return
+      //@ts-expect-error
+      message.member.setNickname(polyUser.data.Username);
     }
     message.channel.send('Your Polytoria account has already been verified. To unlink use `!poly unverify`')
     return

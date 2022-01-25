@@ -1,6 +1,7 @@
 import { Intents, Client } from 'discord.js'
 import { config as configEnv } from 'dotenv'
 import firebaseUtils from './utils/firebaseUtils.js'
+import polyUtils from './utils/polyUtils.js'
 import log from './utils/logUtils.js'
 import { parse as parseCmd } from 'discord-command-parser'
 
@@ -62,15 +63,23 @@ process.on('uncaughtException', err => {
 })
 
 client.on('guildMemberAdd', async (member) => {
-  const isUserVerified: boolean = await firebaseUtils.isVerified(member.id)
-  if (isUserVerified === true) {
+  const isVerified = await firebaseUtils.isVerified(member.id)
+  if (isVerified === true) {
     const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(member.guild.id, 'verifiedRole')
+
+    const setNicknameConfig = await firebaseUtils.getSpecificServerConfig(member.guild.id, 'setVerifiedNickname')
+
     if (verifiedRoleConfig) {
       const role = member.guild.roles.cache.find(r => r.id === verifiedRoleConfig)
 
-      // @ts-expect-error
-      member.roles.add(role)
+      //@ts-expect-error
+      member.roles.add(role)      
+    }
+    if (setNicknameConfig == true) {
+      const linkedUser = await firebaseUtils.getPolyUser(member.id)
+      const polyUser = await polyUtils.getUserInfoFromID(linkedUser.PolytoriaUserID)
 
+      member.setNickname(polyUser.data.Username);
     }
     return
   }

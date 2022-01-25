@@ -6,7 +6,9 @@
     "discord.js": "^13.6.0",
     "dotenv": "^14.2.0",
     "firebase-admin": "^10.0.2",
-    "path": "^0.12.7"
+    "parse-string-boolean": "^1.0.1",
+    "path": "^0.12.7",
+    "to-boolean": "^1.0.0"
   },
   "name": "poly-verify",
   "description": "Polytoria Community Verify",
@@ -29,6 +31,7 @@
   "homepage": "https://github.com/StarManTheGamer/poly-verify#readme",
   "type": "module",
   "devDependencies": {
+    "@types/to-boolean": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "eslint": "^7.32.0",

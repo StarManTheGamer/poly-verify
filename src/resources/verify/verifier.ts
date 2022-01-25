@@ -8,7 +8,7 @@ export default async function (message: Message, args: string[], client: Client)
     return
   }
 
-  const userInfo: any = await polyUtils.getUserInfoFromID(message.content)
+  const userInfo: any = await polyUtils.getUserInfoFromUsername(message.content)
   if (userInfo.status === 400) {
     message.author.send('User not found! Maybe you have made some typo, Try send me message again!')
   }
