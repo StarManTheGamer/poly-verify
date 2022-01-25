@@ -7,6 +7,8 @@ import { parse as parseCmd } from 'discord-command-parser'
 import onUserJoined from './resources/events/onUserJoined.js'
 import verifier from './resources/verify/verifier.js'
 
+import commands from './export.js'
+
 // Configurable Variables
 const prefix = '!poly' // Bot's Default prefix.
 
@@ -15,7 +17,8 @@ const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.DIRECT_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGES
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS
   ]
 })
 
@@ -26,9 +29,9 @@ configEnv()
 firebaseUtils.init()
 
 // On Message sent
-client.on('messageCreate', (message) => {
+client.on('messageCreate', async (message) => {
   if (message.guild === null) {
-    verifier(message)
+    verifier(message, [], client)
     return
   }
 
@@ -37,9 +40,11 @@ client.on('messageCreate', (message) => {
 
   if (!parsed.success) return
 
-  if (parsed.command == 'testDM') {
-    // @ts-expect-error
-    onUserJoined(message.member, message.guild)
+  // @ts-expect-error
+  const targetFunction = commands[parsed.command.toLowerCase()]
+
+  if (targetFunction) {
+    targetFunction(message, parsed.arguments, client)
   }
 })
 
@@ -54,6 +59,14 @@ process.on('unhandledRejection', (reason, p) => {
 
 process.on('uncaughtException', err => {
   console.log(err, 'Uncaught Exception thrown')
+})
+
+client.on('guildMemberAdd', async (member) => {
+  const isUserVerified: boolean = await firebaseUtils.isVerified(member.id)
+  if (isUserVerified === true) {
+    return
+  }
+  onUserJoined(member, member.guild)
 })
 
 log.logNormal('Bot', 'Loggin in...')

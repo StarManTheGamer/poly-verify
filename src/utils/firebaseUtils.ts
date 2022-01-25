@@ -58,4 +58,72 @@ export default class firebaseUtils {
       PolytoriaUserID: polyUserID
     })
   }
+
+  /**
+   * unLinkAccount Function
+   *
+   * @summary Unlink targetted Discord user id from Polytoria Account
+   *
+   * @param { string } discordUserID Targetted user ID
+   */
+  public static async unLinkAccount (discordUserID: string): Promise<void> {
+    const usersRef = fireStore.collection('Users').doc(discordUserID)
+    await usersRef.delete()
+  }
+
+  /**
+   * configServer Function
+   *
+   * @summary Set guild Configuration
+   *
+   * @param { string } guildID Targetted Guild ID
+   * @param { string } keyName KeyName of Config
+   * @param { any } valueData Value Data of Config
+   */
+  public static async configServer (guildID: string, keyName: string, valueData: any): Promise<void> {
+    const guildRef = fireStore.collection('Configuration').doc(guildID)
+    try {
+      await guildRef.update({
+        [keyName]: valueData
+      })
+    } catch {
+      await guildRef.set({})
+
+      await guildRef.update({
+        [keyName]: valueData
+      })
+    }
+  }
+
+  /**
+   * getServerConfig Function
+   *
+   * @summary Get all server configuration
+   *
+   * @param { string } guildID Targetted Guild ID
+   * @returns { Promise<any> } Result data
+   */
+  public static async getServerConfig (guildID: string): Promise<any> {
+    const guildRef = fireStore.collection('Configuration').doc(guildID)
+    const doc = await guildRef.get()
+    if (!doc.exists) {
+      return false
+    } else {
+      return doc.data()
+    }
+  }
+
+  /**
+   * getSpecificServerConfig Function
+   *
+   * @summary Get Specific server config from key
+   *
+   * @param { string } guildID Targetted Guild ID
+   * @param { string } keyName Config KeyName
+   * @returns { Promise<any> } Result Data
+   */
+  public static async getSpecificServerConfig (guildID: string, keyName: string): Promise<any> {
+    const guildData: any = await firebaseUtils.getServerConfig(guildID)
+    return guildData[keyName]
+  }
 }

@@ -1,15 +1,15 @@
-import { Message } from 'discord.js'
+import { Message, Client } from 'discord.js'
 import firebaseUtils from '../../utils/firebaseUtils.js'
 import polyUtils from '../../utils/polyUtils.js'
 
-export default async function (message: Message) {
+export default async function (message: Message, args: string[], client: Client) {
   const isUserVerified: boolean = await firebaseUtils.isVerified(message.author.id)
   if (isUserVerified === true) {
     return
   }
 
   const userInfo: any = await polyUtils.getUserInfoFromID(message.content)
-  if (userInfo.status === 404) {
+  if (userInfo.status === 400) {
     message.author.send('User not found! Maybe you have made some typo, Try send me message again!')
   }
   if (userInfo.status.toString().startsWith('5')) {
@@ -26,6 +26,9 @@ export default async function (message: Message) {
           color: 0x66ff91,
           thumbnail: {
             url: `https://polytoria.com/assets/thumbnails/avatars/headshots/${userInfo.data.AvatarHash}.png`
+          },
+          footer: {
+            text: 'Type `!poly verify` in your recently joined server to get verified role! (If setted)'
           }
         }
 

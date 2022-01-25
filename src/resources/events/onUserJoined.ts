@@ -1,15 +1,9 @@
 import { GuildMember, Guild } from 'discord.js'
-import firebaseUtils from '../../utils/firebaseUtils.js'
 
 /**
  * On User Joined function
  */
 export default async function (member: GuildMember, guild: Guild) {
-  const isUserVerified: boolean = await firebaseUtils.isVerified(member.id)
-  if (isUserVerified === true) {
-    return
-  }
-
   const messageEmbedContent =
     {
       title: 'Polytoria Account Verification process',
