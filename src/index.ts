@@ -51,6 +51,13 @@ client.on('messageCreate', async (message) => {
 
 client.on('ready', () => {
   log.logSuccess('Bot', 'Successfully Connected to Discord!')
+  //@ts-expect-error
+  client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, { type: 'WATCHING' });
+
+  setInterval(function() {
+    //@ts-expect-error
+    client.user.setActivity(`${client.guilds.cache.reduce((a, guild) => a + guild.memberCount, 0)} Users | !poly verify`, { type: 'WATCHING' });
+  },60000)
 })
 
 // Handle Errors without crashing process
