@@ -64,6 +64,14 @@ process.on('uncaughtException', err => {
 client.on('guildMemberAdd', async (member) => {
   const isUserVerified: boolean = await firebaseUtils.isVerified(member.id)
   if (isUserVerified === true) {
+    const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(member.guild.id, 'verifiedRole')
+    if (verifiedRoleConfig) {
+      const role = member.guild.roles.cache.find(r => r.id === verifiedRoleConfig)
+
+      // @ts-expect-error
+      member.roles.add(role)
+
+    }
     return
   }
   onUserJoined(member, member.guild)

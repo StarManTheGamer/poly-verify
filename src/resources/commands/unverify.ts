@@ -22,4 +22,16 @@ export const main = async function (message: Message, args: string[]) {
   }
   await firebaseUtils.unLinkAccount(message.author.id)
   message.channel.send('Your Polytoria account has been unlinked.')
+
+  //@ts-expect-error
+  const verifiedRoleConfig = await firebaseUtils.getSpecificServerConfig(message.guild.id, 'verifiedRole')
+  if (verifiedRoleConfig) {
+    // @ts-expect-error
+    const role = message.guild.roles.cache.find(r => r.id === verifiedRoleConfig)
+
+    // @ts-expect-error
+    message.member.roles.remove(role)
+
+    return
+  }
 }
