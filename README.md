@@ -1,2 +1,2 @@
 # poly-verify
-Polytoria Community Verify
+Setup Instructions Coming Soon
